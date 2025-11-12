@@ -216,8 +216,6 @@ You can train with exported Yolov11 dataset with Google Colab in the link provid
 
 We welcome contributions to this project! If you have suggestions or improvements, please fork the repo and submit a pull request. For major changes, please open an issue first to discuss what you would like to change.
 
-For support, email larry.m.liu@oceanpark.com.hk or enterprise.team@oceanpark.com.hk.
-
 ### License
 
 This project is licensed under the AGPL3.0 License - see the LICENSE file for details.
