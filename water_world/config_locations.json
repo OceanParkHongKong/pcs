@@ -1,0 +1,49 @@
+{
+    "locations": {
+        "Horizon Cove": [
+            {"id": "C-3022", "name": "C-3022"},
+            {"id": "C-3024", "name": "C-3024"},
+            {"id": "C-3026", "name": "C-3026"}
+        ],
+        "Big Wave Bay": [
+            {"id": "C-2001", "name": "C-2001"},
+            {"id": "C-2004", "name": "C-2004"},
+            {"id": "C-2129", "name": "C-2129"}
+        ],
+        "Whiskers' Splash": [
+            {"id": "C-3052", "name": "C-3052"},
+            {"id": "C-3052-2", "name": "C-3052-2"}
+        ],
+        "Doggie's Lagoon": [
+            {"id": "C-3018", "name": "C-3018"}
+        ],
+        "Lazy Cruise": [
+            {"id": "C-2058", "name": "C-2058"},
+            {"id": "C-2060", "name": "C-2060"},
+            {"id": "C-2050", "name": "C-2050"}
+        ],
+        "Riptide": [
+            {"id": "C-2088", "name": "C-2088"},
+            {"id": "C-2078", "name": "C-2078"}
+        ],
+        "Cyclone Spin & Tropical Twist": [
+            {"id": "P1-Ride01", "name": "P1-Ride01"},
+            {"id": "P1-Ride01-2", "name": "P1-Ride01-2"}
+        ],
+        "Rainbow Rush": [
+            {"id": "P2-Ride03", "name": "P2-Ride03"}
+        ],
+        "Cavern & Vortex": [
+            {"id": "C-2045", "name": "C-2045"},
+            {"id": "C-2045-2", "name": "C-2045-2"}
+        ],
+        "Skyhigh Fall": [
+            {"id": "C-2022", "name": "C-2022"}
+        ],
+        "Thunder Loop, Daredevil Drop, Bravery Cliffs": [
+            {"id": "C-2023", "name": "C-2023"},
+            {"id": "C-2023-2", "name": "C-2023-2"},
+            {"id": "C-2023-3", "name": "C-2023-3"}
+        ]
+    }
+}

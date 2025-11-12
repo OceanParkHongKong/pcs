@@ -1,0 +1,45 @@
+# Specify your desired base image
+FROM --platform=linux/amd64 python:3.10-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Update the package list and install dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    vim
+
+# Install Gunicorn
+RUN pip install gunicorn flask flask-httpauth redis mysql-connector-python gevent greenlet DBUtils==1.3
+
+# Copy the Python web script into the container
+COPY web_server_mysql/web_inspect_mysql.py /app/
+COPY web_server_mysql/config_secret_token.json /app/
+COPY ./mysql_sync/database_mysql.py /app/
+COPY ./mysql_sync/config_db.json /app/
+COPY ./web_server_mysql/config_video_feed.json /app/
+COPY shared/users.csv /app/
+COPY ./templates /app/templates
+COPY ./static /app/static
+COPY shared/config_cameras_web_inpsect.json /app/
+COPY shared/config_redis.json /app/
+# COPY cert.pem /app/
+# COPY key.pem /app/
+
+# Command to run the application using Gunicorn
+# Adjust the command according to your Gunicorn configuration
+# CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--certfile=cert.pem", "--keyfile=key.pem", "web_inspect_mysql:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--worker-class", "gevent", "--workers", "9", "web_inspect_mysql:app"]
+
+#docker build -f Dockerfile.web_server_mysql -t pcs_web_server_mysql:latest .
+#docker run --rm -it -p 7000:5000  --name pcs_web_server_mysql pcs_web_server_mysql:latest
+
+# docker container rm pcs_web_server_mysql
+# docker image rm pcs_web_server_mysql
+
+#docker save pcs_web_server_mysql:14 > pcs_web_server_mysql_14.tar 
+# scp 192.168.  pcs-api-1
+#docker load < pcs_web_server_mysql_14.tar
+
+#for production:
+# docker run  -d -p 5000:5000 -v $(pwd)/config_redis.json:/app/config_redis.json -v $(pwd)/config_db.json:/app/config_db.json -v $(pwd)/config_secret_token.json:/app/config_secret_token.json -v $(pwd)/config_video_feed.json:/app/config_video_feed.json -v $(pwd)/users.csv:/app/users.csv --name pcs_web_server_mysql_6 pcs_web_server_mysql:6

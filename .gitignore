@@ -1,0 +1,21 @@
+extracted_frames
+dataset_yolo 1.1
+video_records
+*.mp4
+logs
+do_not_commit*
+__pycache__
+pid*.txt
+output.log
+people_count_database.db
+extracted_frames*
+frames*
+verify_images*
+
+# Xcode files
+# User-specific files
+xcuserdata/
+*.xcuserstate
+*.xcuserdatad
+# Workspace user data
+*.xcworkspace/xcuserdata/

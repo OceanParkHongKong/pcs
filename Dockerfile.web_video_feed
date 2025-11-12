@@ -1,0 +1,26 @@
+# Specify your desired base image
+FROM --platform=linux/arm64 python:3.10-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Update the package list and install dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    vim
+
+# Install Gunicorn
+RUN pip install gunicorn redis flask gevent flask-cors
+
+# Copy the Python web script into the container
+COPY web_video_feed/web_video_feed.py /app/
+COPY shared/config_redis.json /app/
+
+# Command to run the application using Gunicorn
+# Adjust the command according to your Gunicorn configuration
+# workers: A common formula is: (2 x number_of_cores) + 1, Mac Ultra has 28 cores.
+CMD ["gunicorn", "--bind", "0.0.0.0:5001", "-k", "gevent", "--workers", "10", "web_video_feed:app"]
+
+
+#docker build -f Dockerfile.web_video_feed -t pcs_web_video_feed:latest .
+#docker run -it --rm -p 5001:5001 --name pcs_web_video_feed pcs_web_video_feed:latest

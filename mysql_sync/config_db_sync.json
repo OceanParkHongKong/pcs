@@ -1,0 +1,17 @@
+{
+    "sqlite_api_url": "http://192.168.your.ip:5000/get_last_result",
+    "counting_results_api_url": "http://192.168.your.ip:5000/counting-results",
+
+    "sqlite_api_url_backup": "http://192.168.your.ip2:5000/get_last_result",
+    "counting_results_api_url_backup": "http://192.168.your.ip2:5000/counting-results",
+
+    "headers_sqlite": {
+        "Authorization": "Bearer some_secret_token_here"
+    },
+    
+    "mysql_api_url": "http://192.168.xx.xx:7000/get_last_result",
+    "insert_api_url": "http://192.168.xx.xx:7000/counting-results",
+    "headers_mysql": {
+        "Authorization": "Bearer some_secret_token_here"
+    }
+}

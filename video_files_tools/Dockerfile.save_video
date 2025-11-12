@@ -1,0 +1,46 @@
+# Use the official Python image from the Docker Hub
+FROM python:3.9-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the current directory contents into the container at /app
+COPY save_video_web_server.py /app
+COPY save_video_config.txt /app
+COPY save_video_config_ww.txt /app
+COPY save_video.py /app
+COPY build/web /app/build/web
+COPY users.csv /app
+
+# Install necessary packages
+RUN apt-get update && apt-get install -y libgl1-mesa-glx libglib2.0-0 iputils-ping curl tzdata ffmpeg && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Set the timezone
+ENV TZ=Asia/Hong_Kong
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir flask psutil opencv-python opencv-python-headless flask_cors
+
+# Make port 8000 available to the world outside this container
+EXPOSE 8000
+
+# Define environment variable
+ENV FLASK_APP=save_video_web_server.py
+
+# Run app.py when the container launches
+CMD ["flask", "run", "--host=0.0.0.0", "--port=8000"]
+
+
+#docker build --platform=linux/amd64 -f Dockerfile.save_video -t pcs_save_video:latest .
+
+#for window, need double quote! canot single quote.
+#docker run -it --name pcs_save_video -e "PEOPLE_COUNT_CC_PASS=opcheck:password_here" -e "PEOPLE_COUNT_CROCO_PASS=opcheck:password_here" -v E:\PeopleCount_video_records\video_records_docker:/app/video_records/ -p 8000:8000 pcs_save_video:latest
+
+#for macos
+#If the web browser shows a black screen during the first run, internet access is needed for initial setup.
+#docker run -it --name pcs_save_video -e "PEOPLE_COUNT_CC_PASS=password_here" -e "PEOPLE_COUNT_CROCO_PASS=password_here" -v ~/video_records/video_records_docker:/app/video_records/:rw -p 8000:8000 pcs_save_video:latest
+
+# docker image save -o pcs_save_video.tar pcs_save_video:latest

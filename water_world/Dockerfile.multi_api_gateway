@@ -1,0 +1,34 @@
+FROM python:3.9-slim
+
+WORKDIR /app
+
+# Copy requirements
+# COPY requirements.txt .
+
+# Install Python dependencies
+# RUN pip install --no-cache-dir -r requirements.txt
+
+# Install additional packages for API Gateway
+RUN pip install flask flask-socketio flask-cors requests pyjwt python-socketio gunicorn eventlet websocket-client
+
+# Copy source code
+COPY multi_server_gateway/api_gateway.py /app/
+COPY multi_server_gateway/api_gateway_config.json /app/
+# COPY multi_server_gateway/stream_redirect_server.py .
+# COPY multi_server_gateway/stream_redirect_config.json .
+COPY logging_config.py /app/
+
+# Create logs directory
+RUN mkdir -p logs
+
+# Expose port
+EXPOSE 7002
+
+# Set environment variables
+ENV PYTHONPATH=/app
+
+# Use Gunicorn with eventlet for production
+CMD ["gunicorn", "--worker-class", "eventlet", "-w", "5", "--bind", "0.0.0.0:7002", "api_gateway:app"]
+
+# docker build -f Dockerfile.multi_api_gateway -t pcs_ww_multi_server_gateway .
+# docker run  -d -p 7002:7002 --name pcs_ww_multi_server_gateway -v $(pwd)/api_gateway_config.json:/app/api_gateway_config.json pcs_ww_multi_server_gateway:latest

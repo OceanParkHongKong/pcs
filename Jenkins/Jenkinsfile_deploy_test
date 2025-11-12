@@ -1,0 +1,86 @@
+pipeline {
+    agent { label 'larry_macbook' }
+
+    environment {
+        REMOTE_HOST = '192.168.dev.ip' // Replace with your remote host IP or hostname
+        REMOTE_USER = 'accountname'    // Replace with your remote host username
+        REMOTE_PATH = '/home/accountname'  // Replace with the path on the remote host where you want to store the Docker image
+        SHARED_FILE = '/Users/username/Oceanpark/jenkins_docker_image_built.txt' // Shared file path
+    }
+
+    stages {
+        stage('Read and Filter Docker Images') {
+            steps {
+                script {
+                    // Read the shared file into a variable
+                    def dockerImages = readFile(SHARED_FILE).split('\n')
+                    
+                    // Remove any empty lines
+                    dockerImages = dockerImages.findAll { it.trim() }
+
+                    // Create a map to keep the latest version of each Docker image
+                    def latestImages = [:]
+                    
+                    dockerImages.each { imageTag ->
+                        def imageName = imageTag.split(':')[0]
+                        latestImages[imageName] = imageTag
+                    }
+                    
+                    // Save the filtered Docker images to a file for later stages
+                    def latestImagesList = latestImages.values().join('\n')
+                    writeFile file: 'docker_images_to_deploy.txt', text: latestImagesList
+                }
+            }
+        }
+
+        stage('SCP Docker Images to Remote Host') {
+            steps {
+                script {
+                    // Read the Docker images to deploy from the file
+                    def dockerImages = readFile('docker_images_to_deploy.txt').split('\n')
+                    
+                    dockerImages.each { imageTag ->
+                        // Save the Docker image to a tar file
+                        def tarFile = "${imageTag.replace(':', '_')}.tar"
+                        sh "docker save -o ${tarFile} ${imageTag}"
+                        
+                        // SCP the Docker image tar file to the remote host
+                        sh "scp ${tarFile} ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_PATH}"
+                        
+                        // Clean up the local tar file
+                        sh "rm ${tarFile}"
+                    }
+                }
+            }
+        }
+
+        stage('Deploy Docker Images on Remote Host') {
+            steps {
+                script {
+                    // Read the Docker images to deploy from the file
+                    def dockerImages = readFile('jenkins_docker_image_built.txt').split('\n')
+                    
+                    dockerImages.each { imageTag ->
+                        def tarFile = "${REMOTE_PATH}/${imageTag.replace(':', '_')}.tar"
+                        
+                        // SSH into the remote host and load & run the Docker image
+                        sh """
+                        ssh ${REMOTE_USER}@${REMOTE_HOST} << EOF
+                        docker load -i ${tarFile}
+                        docker stop ${DOCKER_CONTAINER} || true
+                        docker rm ${DOCKER_CONTAINER} || true
+                        docker run -d -p 5000:5000 -v /path/to/remote/database.db:/app/people_count_database.db --name ${DOCKER_CONTAINER} ${imageTag}
+                        EOF
+                        """
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}

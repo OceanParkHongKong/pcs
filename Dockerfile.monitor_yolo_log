@@ -1,0 +1,48 @@
+# Specify your desired base image
+FROM --platform=linux/arm64 python:3.10-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Update the package list and install dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    vim \
+    tzdata && \
+    ln -fs /usr/share/zoneinfo/Asia/Hong_Kong /etc/localtime && \
+    dpkg-reconfigure -f noninteractive tzdata && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install required Python packages
+RUN pip install requests watchdog
+
+# Copy application files
+COPY monitor/smtp.py /app/
+COPY monitor/config_smtp.json /app/
+COPY monitor/config_api.json /app/
+COPY monitor/yolo_log_monitor.py /app/
+
+# COPY cert.pem /app/
+# COPY key.pem /app/
+
+# Set the entrypoint to execute the script
+ENTRYPOINT ["python", "yolo_log_monitor.py"]
+
+# Use CMD to pass default arguments if any (optional)
+CMD []
+
+
+#docker build -f Dockerfile.monitor_yolo_log -t pcs_monitor_yolo_log:latest .
+#docker run --rm -it -v ./monitor/logs:/app/logs --name pcs_monitor_yolo_log pcs_monitor_yolo_log:latest
+
+# docker container rm pcs_monitor_yolo_log
+# docker image rm pcs_monitor_yolo_log
+
+#docker save pcs_monitor_yolo_log:1 > pcs_monitor_yolo_log_1.tar 
+# scp 192.168...
+#docker load < pcs_monitor_yolo_log_1.tar
+
+#for production: 
+#in folder people_count_crocoland/swift
+#docker run  --restart=always -d -v ./logs:/app/logs -v /Users/username/people_count_crocoland/monitor/config_smtp.json:/app/config_smtp.json --name pcs_monitor_yolo_log pcs_monitor_yolo_log:1

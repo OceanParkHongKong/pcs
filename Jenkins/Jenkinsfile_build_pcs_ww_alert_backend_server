@@ -1,0 +1,221 @@
+pipeline {
+    agent { label 'larry_macbook' }
+
+    environment {
+        DOCKER_IMAGE = 'pcs_ww_alert_backend_server'
+        DOCKER_CONTAINER = 'pcs_ww_alert_backend_server_container'
+        // Persistent data directory on Jenkins node
+        PERSISTENT_DATA_DIR = '/Users/username/Oceanpark/people_count_op/water_world_data'
+        // DOCKER_REGISTRY = '192.168.registry.ip:8000'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    // Output current directory for debugging
+                    sh 'pwd'
+                    
+                    // Checkout the source code from the repository
+                    checkout([$class: 'GitSCM', 
+                              branches: [[name: '*/main']], 
+                              doGenerateSubmoduleConfigurations: false, 
+                              extensions: [], 
+                              userRemoteConfigs: [[url: 'http://192.168.gitServer.ip:3000/accountname/people_count_op.git']]])
+                }
+            }
+        }
+
+        stage('Prepare Persistent Data Directory') {
+            steps {
+                script {
+                    // Create persistent data directory if it doesn't exist
+                    sh """
+                        mkdir -p ${PERSISTENT_DATA_DIR}/logs
+                        
+                        # Copy config files from workspace to persistent directory if they don't exist
+                        if [ ! -f ${PERSISTENT_DATA_DIR}/config.json ]; then
+                            cp ./water_world/config.json ${PERSISTENT_DATA_DIR}/config.json || echo "config.json not found in workspace, will be created by application"
+                        fi
+                        
+                        if [ ! -f ${PERSISTENT_DATA_DIR}/location_settings.json ]; then
+                            if [ -f ./water_world/location_settings.json ]; then
+                                cp ./water_world/location_settings.json ${PERSISTENT_DATA_DIR}/location_settings.json
+                            else
+                                echo '{}' > ${PERSISTENT_DATA_DIR}/location_settings.json
+                            fi
+                        fi
+                        
+                        if [ ! -f ${PERSISTENT_DATA_DIR}/config_kafka.json ]; then
+                            if [ -f ./shared/config_kafka.json ]; then
+                                cp ./shared/config_kafka.json ${PERSISTENT_DATA_DIR}/config_kafka.json
+                            else
+                                echo '{}' > ${PERSISTENT_DATA_DIR}/config_kafka.json
+                            fi
+                        fi
+
+                        if [ ! -f ${PERSISTENT_DATA_DIR}/users.json ]; then
+                            if [ -f ./water_world/users.json ]; then
+                                cp ./water_world/users.json ${PERSISTENT_DATA_DIR}/users.json
+                            else
+                                echo '{}' > ${PERSISTENT_DATA_DIR}/users.json
+                            fi
+                        fi
+                        
+                        if [ ! -f ${PERSISTENT_DATA_DIR}/user_preferences.json ]; then
+                            if [ -f ./water_world/user_preferences.json ]; then
+                                cp ./water_world/user_preferences.json ${PERSISTENT_DATA_DIR}/user_preferences.json
+                            else
+                                echo '{}' > ${PERSISTENT_DATA_DIR}/user_preferences.json
+                            fi
+                        fi
+                        
+                        # Create empty alerts.db if it doesn't exist (will be initialized by application)
+                        if [ ! -f ${PERSISTENT_DATA_DIR}/alerts.db ]; then
+                            touch ${PERSISTENT_DATA_DIR}/alerts.db
+                        fi
+                        
+                        # List the persistent directory contents for verification
+                        echo "Persistent data directory contents:"
+                        ls -la ${PERSISTENT_DATA_DIR}/
+                    """
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Build the Docker image using root as context so we can access shared/
+                    sh "docker build -t ${DOCKER_IMAGE}:${env.BUILD_ID} -f ./Dockerfile.alert_backend_server ."
+                }
+            }
+        }
+
+        stage('Stop and Remove Old Container') {
+            steps {
+                script {
+                    // Stop the running container
+                    sh "docker stop ${DOCKER_CONTAINER} || true"
+                    // Remove the old container
+                    sh "docker rm ${DOCKER_CONTAINER} || true"
+                }
+            }
+        }
+
+        stage('Remove Old Image') {
+            steps {
+                script {
+                    // Remove the old image, if necessary
+                    sh "docker rmi ${DOCKER_IMAGE}:previous || true"
+                }
+            }
+        }
+
+        // stage('Tag Docker Image') {
+        //     steps {
+        //         script {
+        //             sh "docker tag ${DOCKER_IMAGE}:${env.BUILD_ID} ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${env.BUILD_ID}"
+        //         }
+        //     }
+        // }
+
+        // stage('Push Docker Image') {
+        //     steps {
+        //         script {
+        //             sh "docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${env.BUILD_ID}"
+        //         }
+        //     }
+        // }
+        
+        stage('Run New Container') {
+            steps {
+                script {
+                    // Run the new Docker image with proper port mapping and volume mounts to persistent directory
+                    sh """
+                        docker run -d --name ${DOCKER_CONTAINER} -p 8002:8002 \\
+                            --network people_count_op_pcs_network_host1 \\
+                            -v ${PERSISTENT_DATA_DIR}/config.json:/app/config.json \\
+                            -v ${PERSISTENT_DATA_DIR}/config_kafka.json:/app/config_kafka.json \\
+                            -v ${PERSISTENT_DATA_DIR}/logs:/app/logs \\
+                            -v ${PERSISTENT_DATA_DIR}/alerts.db:/app/alerts.db \\
+                            -v ${PERSISTENT_DATA_DIR}/location_settings.json:/app/location_settings.json \\
+                            -v ${PERSISTENT_DATA_DIR}/users.json:/app/users.json \\
+                            -v ${PERSISTENT_DATA_DIR}/user_preferences.json:/app/user_preferences.json \\
+                            -v /Users/username/Oceanpark/people_count_op/swift/people_count_database.db:/app/people_count_database.db \\
+                            --restart=unless-stopped \\
+                            ${DOCKER_IMAGE}:${env.BUILD_ID}
+                    """
+                }
+            }
+        }
+
+        stage('Tag Image for Rollback') {
+            steps {
+                script {
+                    // Tag the current image as 'previous' for potential rollback
+                    sh "docker tag ${DOCKER_IMAGE}:${env.BUILD_ID} ${DOCKER_IMAGE}:previous"
+                }
+            }
+        }
+
+        stage('Health Check') {
+            steps {
+                script {
+                    // Wait a moment for the container to start
+                    sh 'sleep 10'
+                    
+                    // Check if the container is running
+                    sh "docker ps | grep ${DOCKER_CONTAINER}"
+                    
+                    // Optional: Check if the service is responding (uncomment if you have a health endpoint)
+                    // sh 'curl -f http://localhost:8002/health || exit 1'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Water World Alert Backend Server deployment successful!'
+            // Optional: Send notification
+        }
+        
+        failure {
+            echo 'Water World Alert Backend Server deployment failed!'
+            
+            script {
+                // On failure, try to rollback to previous version if it exists
+                sh """
+                    if docker images | grep -q '${DOCKER_IMAGE}:previous'; then
+                        echo 'Rolling back to previous version...'
+                        docker stop ${DOCKER_CONTAINER} || true
+                        docker rm ${DOCKER_CONTAINER} || true
+                        docker run -d --name ${DOCKER_CONTAINER} -p 8002:8002 \\
+                            --network people_count_op_pcs_network_host1 \\
+                            -v ${PERSISTENT_DATA_DIR}/config.json:/app/config.json \\
+                            -v ${PERSISTENT_DATA_DIR}/logs:/app/logs \\
+                            -v ${PERSISTENT_DATA_DIR}/alerts.db:/app/alerts.db \\
+                            -v ${PERSISTENT_DATA_DIR}/location_settings.json:/app/location_settings.json \\
+                            -v ${PERSISTENT_DATA_DIR}/users.json:/app/users.json \\
+                            -v ${PERSISTENT_DATA_DIR}/user_preferences.json:/app/user_preferences.json \\
+                            -v /Users/username/Oceanpark/people_count_op/swift/people_count_database.db:/app/people_count_database.db \\
+                            --restart=unless-stopped \\
+                            ${DOCKER_IMAGE}:previous
+                        echo 'Rollback completed'
+                    else
+                        echo 'No previous version available for rollback'
+                    fi
+                """
+            }
+        }
+        
+        always {
+            // Clean up workspace after the build
+            cleanWs()
+            
+            // Optional: Clean up dangling images to save space
+            sh 'docker image prune -f || true'
+        }
+    }
+} 

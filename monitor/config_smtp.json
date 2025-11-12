@@ -1,0 +1,11 @@
+{
+    "smtp_server": "88.88.88.88",
+    "smtp_port": 88,
+    "username": "",
+    "password": "",
+    "sender_email": "pcs@oceanpark.com.hk",
+    "recipient_emails": [
+        "firstUser@oceanpark.com.hk",
+        "secondUser@oceanpark.com.hk"
+    ]
+}

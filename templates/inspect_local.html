@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Video File Inspection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <style>
+        body {
+            padding-top: 20px;
+        }
+        #sidebar {
+            width: 250px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh; 
+            background: #f8f9fa;
+            padding: 20px;
+            box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto; /* Add this line to get a vertical scroll bar when needed */
+        }
+        #content {
+            margin-left: 250px;
+        }
+        .active {
+            background-color: #007bff; /* Bootstrap primary color */
+            color: white;
+        }
+
+        #waitingSpinner {
+            border: 5px solid #f3f3f3; /* Light grey */
+            border-top: 5px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            margin-left: -25px; /* Half the width */
+            margin-top: -25px; /* Half the height */
+            z-index: 1000; /* Make sure it's on top */
+            display: none; /* Hide by default */
+          }
+          
+          #videoFileList li {
+            margin-bottom: 15px; /* Keeps that nice space between items */
+            list-style-type: disc; /* This'll add a dot before each item */
+            padding-left: 5px; /* Adds a bit of padding so the text ain't rubbin' up against that dot */
+        }
+
+        /* Additional padding styles */
+        #sidebar h2 {
+            padding-bottom: 10px;
+        }
+        #content {
+            padding: 20px;
+        }
+        #content > h1 {
+            padding-bottom: 10px;
+        }
+        #content > div {
+            padding-bottom: 20px;
+        }
+        #content h2 {
+            padding-bottom: 10px;
+        }
+        #video-feed {
+            display: block;
+            margin: 0 auto;
+            padding-bottom: 20px;
+        }
+
+        @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+        }
+        .top-menu-bar {
+        width: 100%;
+        background-color: #007bff; /* Bootstrap primary color */
+        overflow: hidden;
+    
+        }
+
+        .menu-item {
+            float: right;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        .menu-item:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Menu Bar -->
+    <div class="top-menu-bar">
+        <a href="/" class="menu-item">Home</a>
+        <a href="javascript:void(0);" class="menu-item" onclick="openHelperPopup()">Helper</a>
+    </div>
+    <!-- Sidebar -->
+    <div id="sidebar">
+        <h2>Available Video Files</h2>
+        <ul id="videoFileList" class="list-unstyled">
+            <!-- Video files will be listed here -->
+        </ul>
+    </div>
+
+    <!-- Page Content -->
+    <div id="content">
+        <h1>Local Video File Inspection</h1>
+        <div id="waitingSpinner"></div>
+        <!-- Real-Time Video Feed -->
+        <div>
+            <h2>Real-Time Video Feed</h2>
+            <img id="video-feed" src="http://{{ hostIP }}:6001/video_feed" alt="Live video feed">
+        </div>
+
+        <!-- Results Table -->
+        <div>
+            <h2>Results Table</h2>
+            <table id="resultsTable" class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Timestamp</th>
+                        <th>In Count</th>
+                        <th>Out Count</th>
+                        <th>Region Count</th>
+                    </tr>
+                </thead>
+                <tbody id="results-table-body">
+                    <!-- Results will be listed here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/jquery-3.5.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script>
+        // Fetch and list the available video files
+        fetch('/api/video-files')
+        .then(response => response.json())
+        .then(files => {
+            let fileListElement = document.getElementById('videoFileList');
+            files.forEach(file => {
+                let listItem = document.createElement('li');
+                listItem.innerText = file;
+                listItem.addEventListener('click', (event) => startPeopleCount(file, event));
+                fileListElement.appendChild(listItem);
+            });
+        });
+
+        function startPeopleCount(fileName, event) {
+            highlightListItem(event);
+        
+            showWaitingSpinner();
+        
+            let videoElement = document.getElementById('video-feed');
+            videoElement.src = `http://{{ hostIP }}:6001/video_feed`;
+ 
+        
+            fetch('/api/start-people-count', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ fileName: fileName })
+            })
+            .then(response => response.json())
+            .then(fileName => {
+                updateResultsTable(fileName);
+            });
+        }
+
+        function updateResultsTable(cameraName) {
+            var xhr = new XMLHttpRequest(); // Here begins the invocation of a new request
+            xhr.open('GET', '/get_last_result?camera_name=' + encodeURIComponent(cameraName), true); // The spell to call the API
+    
+            // When the spell is complete, this sorcery shall be invoked
+            xhr.onload = function() {
+                if (this.status === 200) {
+                    var response = JSON.parse(this.responseText); // Interpret the soothsayer's script
+    
+                    // Prepare the sacred vessel for the new data
+                    var tbody = document.getElementById('results-table-body');
+                    tbody.innerHTML = ''; // Clear the old prophecy
+    
+                    // For each revelation, inscribe it into the table
+                    response.forEach(function(result, index) {
+                        var row = tbody.insertRow();
+                        var cellNumber = row.insertCell(0);
+                        var cellTimestamp = row.insertCell(1);
+                        var cellInCount = row.insertCell(2);
+                        var cellOutCount = row.insertCell(3);
+                        var cellRegionCount = row.insertCell(4);
+                        cellNumber.innerHTML = index + 1;
+                        cellTimestamp.innerHTML = result.timestamp;
+                        cellInCount.innerHTML = result.in_count;
+                        cellOutCount.innerHTML = result.out_count;
+                        cellRegionCount.innerHTML = result.region_count;
+                    });
+                } else {
+                    console.error('The API hath responded with a status of error: ' + this.status); // Log any foul responses
+                }
+            };
+    
+            xhr.onerror = function() {
+                console.error('An error did occur whilst attempting to converse with the API.'); // Log any communication failings
+            };
+    
+            xhr.send(); // Dispatch the request to the heavens
+        }
+
+        function highlightListItem(event) {
+            // Remove the 'highlight' class from all list items
+            var listItems = document.querySelectorAll('#videoFileList li');
+            listItems.forEach(function(item) {
+                item.classList.remove('active');
+            });
+            
+            // Add the 'highlight' class to the clicked list item
+            event.target.classList.add('active');
+        }
+
+        function refreshImage() {
+            var imgElement = document.getElementById('video-feed'); // The lookout scope for ye video feed
+            var spinner = document.getElementById('waitingSpinner'); // The whirling dervish ye wish to banish
+        
+            imgElement.onload = function() {
+                // When the image has loaded from the crow's nest, hide the spinner
+                hideWaitingSpinner();
+            };
+        
+            var src = imgElement.getAttribute('src');
+            var newSrc = src.split('?')[0] + '?rand=' + new Date().getTime();
+        
+            imgElement.setAttribute('src', newSrc);
+        }
+
+        function showWaitingSpinner() {
+            var spinner = document.getElementById('waitingSpinner');
+            spinner.style.display = 'block'; // Show the spinner
+        }
+        
+        function hideWaitingSpinner() {
+            var spinner = document.getElementById('waitingSpinner');
+            spinner.style.display = 'none'; // Hide the spinner
+        }
+        
+        setInterval(function() {
+            refreshImage();
+            var lElement = document.querySelector('#sidebar li.active')
+            var cameraName = lElement.textContent; // Fetch the name of the selected camera
+            updateResultsTable(cameraName); // Invoke the update
+            fetchTodaysResults(cameraName); 
+        }, 5000);   
+
+        // Function to open the helper popup
+        function openHelperPopup() {
+            var width = 250;
+            var height = 150;
+            var left = (window.innerWidth / 2) - (width / 2);
+            var top = (window.innerHeight / 2) - (height / 2);
+            window.open('/helper', 'Helper', 'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+# Specify your desired base image
+FROM --platform=linux/arm64 python:3.10-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Update the package list and install dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    vim
+
+# Install Gunicorn
+RUN pip install gunicorn flask flask-httpauth 
+
+# Copy the Python web script into the container
+COPY web_server_sqlite/web_inspect.py /app/
+COPY web_server_sqlite/database_sqlite.py /app/
+# COPY people_count_database_new.db /app/people_count_database.db
+COPY shared/config_video_feed.json /app/
+COPY shared/users.csv /app/
+
+COPY ./templates /app/templates
+COPY ./static /app/static
+COPY shared/config_cameras_web_inpsect.json /app/
+# COPY cert.pem /app/
+# COPY key.pem /app/
+
+# Command to run the application using Gunicorn
+# Adjust the command according to your Gunicorn configuration
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "web_inspect:app"]
+
+
+#docker build -f Dockerfile.web_server_sqlite -t pcs_web_server_sqlite:latest .
+#docker run --rm -it -p 5000:5000  -v ${PWD}/swift/people_count_database.db:/app/people_count_database.db --name pcs_web_server_sqlite pcs_web_server_sqlite:latest
+
+# docker container rm pcs_web_server_sqlite
+# docker image rm pcs_web_server_sqlite
+
+#docker save pcs_web_server_sqlite:lastest > pcs_web_server_sqlite_2024May03_xxxx.tar 
+# scp 192.168...
+#docker load < pcs_web_server_2024May03_xxxx.tar
+
+#for production: 
+#docker name must be 'pcs_web_server_sqlite', otherwise in docker sync_mysql
+#Failed to resolve 'pcs_web_server_sqlite' ([Errno -2] Name or service not known)"))
+#in folder people_count_crocoland
+#docker run -d -p 5000:5000  -v ${PWD}/users.csv:/app/users.csv -v ${PWD}/people_count_database.db:/app/people_count_database.db -v ${PWD}/config_video_feed.json:/app/config_video_feed.json --network pcs_network --name pcs_web_server_sqlite pcs_web_server_sqlite:14
+
+#docker run -d -p 5000:5000  -v ${PWD}/shared/users.csv:/app/users.csv -v ${PWD}/swift/people_count_database.db:/app/people_count_database.db -v ${PWD}/shared/config_video_feed.json:/app/config_video_feed.json --network pcs_network --name pcs_web_server_sqlite pcs_web_server_sqlite:14
+
+# docker inspect -f '{{ .HostConfig.RestartPolicy.Name }}' pcs_web_server_sqlite
+# docker update --restart=always pcs_web_server_sqlite

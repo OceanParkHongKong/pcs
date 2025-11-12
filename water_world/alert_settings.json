@@ -1,0 +1,42 @@
+{
+    "COL_In_Cam1": {
+        "inCountDetectEnabled": false,
+        "lengthOfStayDetectEnabled": false,
+        "motionDetectionEnabled": false,
+        "occupancyDetectEnabled": true,
+        "orangeThreshold": "2",
+        "outCountDetectEnabled": false,
+        "redThreshold": "50",
+        "yellowThreshold": "1"
+    },
+    "COL_In_Cam2": {
+        "inCountDetectEnabled": false,
+        "lengthOfStayDetectEnabled": false,
+        "motionDetectionEnabled": false,
+        "occupancyDetectEnabled": false,
+        "orangeThreshold": "5",
+        "outCountDetectEnabled": false,
+        "redThreshold": "50",
+        "yellowThreshold": "2"
+    },
+    "WW_BWB": {
+        "blackThreshold": "10",
+        "inCountDetectEnabled": false,
+        "lengthOfStayDetectEnabled": false,
+        "motionDetectionEnabled": false,
+        "occupancyDetectEnabled": true,
+        "outCountDetectEnabled": false,
+        "redThreshold": "4",
+        "yellowThreshold": "2"
+    },
+    "WW_HC": {
+        "blackThreshold": "10",
+        "inCountDetectEnabled": true,
+        "lengthOfStayDetectEnabled": false,
+        "motionDetectionEnabled": true,
+        "occupancyDetectEnabled": true,
+        "outCountDetectEnabled": true,
+        "redThreshold": "5",
+        "yellowThreshold": "2"
+    }
+}

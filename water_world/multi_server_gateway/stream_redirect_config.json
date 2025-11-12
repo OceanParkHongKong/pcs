@@ -1,0 +1,45 @@
+{
+    "backend_servers": {
+        "backend1": {
+            "base_url": "http://192.168.primary.ip:5001",
+            "name": "backend1",
+            "description": "backend server for pools",
+            "cameras": [
+                "C-2001",
+                "C-2004",
+                "C-2008",
+                "C-2129",
+                "C-3018",
+                "C-3022",
+                "C-3024",
+                "C-3026",
+                "C-2058",
+                "C-2050",
+                "C-2025-2",
+                "C-2088",
+                "C-2078",
+                "C-3052",
+                "C-3052-2"
+            ]
+        },
+        "backend2": {
+            "base_url": "http://192.168.secondary.ip:5001",
+            "name": "backend2", 
+            "description": "backend server for 9 slides",
+            "cameras": [
+                "P1-Ride01",
+                "P1-Ride01-2", 
+                "P2-Ride03",
+                "C-2023",
+                "C-2023-2",
+                "C-2023-3",
+                "C-2045",
+                "C-2045-2",
+                "C-2022"
+            ]
+        }
+    },
+    "fallback_backend": "backend1",
+    "enable_health_check": false,
+    "redirect_method": "HTTP_REDIRECT"
+}

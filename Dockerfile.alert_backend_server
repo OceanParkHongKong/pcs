@@ -1,0 +1,71 @@
+# Use Python 3.9 slim image as base
+FROM python:3.9-slim
+
+# Set working directory
+WORKDIR /app
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/app \
+    TZ=Asia/Hong_Kong
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    libsqlite3-dev \
+    tzdata \
+    && rm -rf /var/lib/apt/lists/* \
+    && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
+    && echo $TZ > /etc/timezone
+
+# Copy requirements first to leverage Docker cache
+COPY water_world/requirements.txt .
+
+# Install Python dependencies
+RUN pip install -r requirements.txt
+
+# Copy application code from water_world directory
+COPY water_world/ .
+
+# Copy Kafka config from shared directory  
+COPY shared/config_kafka.json .
+
+# Create necessary directories and set permissions
+RUN mkdir -p logs \
+    && chmod 755 logs \
+    && touch alerts.db \
+    && chmod 666 alerts.db
+
+# Create a non-root user
+RUN useradd -m appuser && chown -R appuser:appuser /app
+USER appuser
+
+# Expose the port the app runs on
+EXPOSE 8002
+
+# Set healthcheck
+# HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+#     CMD curl -f http://localhost:8002/ || exit 1
+
+# Use Gunicorn with eventlet worker
+CMD ["gunicorn", "--worker-class", "eventlet", "--workers", "1", "--bind", "0.0.0.0:8002", "alert_backend_server_wsgi:application"]
+
+
+
+# docker build -f Dockerfile.alert_backend_server -t pcs_ww_alert_backend_server .
+
+# docker save pcs_ww_alert_backend_server:11 > ../pcs_ww_alert_backend_server.tar
+
+# docker run -d --name pcs_ww_alert_backend_server -p 8002:8002 \
+#     --network people_count_op_pcs_network_host1 \
+#     -v $(pwd)/../swift/people_count_database.db:/app/people_count_database.db \
+#     -v $(pwd)/config.json:/app/config.json \
+#     -v $(pwd)/logs:/app/logs \
+#     -v $(pwd)/alerts.db:/app/alerts.db \
+#     -v $(pwd)/location_settings.json:/app/location_settings.json \
+#     -v $(pwd)/users.json:/app/users.json \
+#     -v $(pwd)/user_preferences.json:/app/user_preferences.json \
+#     --restart=unless-stopped \
+#     pcs_ww_alert_backend_server:11
+

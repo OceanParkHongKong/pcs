@@ -1,0 +1,6 @@
+{
+    "host": "192.168.xx.xx",
+    "user": "root",
+    "password": "mysql_password",
+    "database": "people_count_db"
+}

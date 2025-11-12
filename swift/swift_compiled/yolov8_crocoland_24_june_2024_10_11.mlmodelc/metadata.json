@@ -1,0 +1,123 @@
+[
+  {
+    "shortDescription" : "Ultralytics best model trained on \/content\/datasets\/merged\/data.yaml",
+    "metadataOutputVersion" : "3.0",
+    "outputSchema" : [
+      {
+        "dataType" : "Float32",
+        "hasShapeFlexibility" : "1",
+        "isOptional" : "0",
+        "shapeFlexibility" : "0... × 1",
+        "shapeRange" : "[[0, -1], [1, 1]]",
+        "formattedType" : "MultiArray (Float32 0 × 1)",
+        "type" : "MultiArray",
+        "shape" : "[0, 1]",
+        "name" : "confidence",
+        "shortDescription" : "Boxes × Class confidence (see user-defined metadata \"classes\")"
+      },
+      {
+        "dataType" : "Float32",
+        "hasShapeFlexibility" : "1",
+        "isOptional" : "0",
+        "shapeFlexibility" : "0... × 4",
+        "shapeRange" : "[[0, -1], [4, 4]]",
+        "formattedType" : "MultiArray (Float32 0 × 4)",
+        "type" : "MultiArray",
+        "shape" : "[0, 4]",
+        "name" : "coordinates",
+        "shortDescription" : "Boxes × [x, y, width, height] (relative to image size)"
+      }
+    ],
+    "version" : "8.2.26",
+    "modelParameters" : [
+
+    ],
+    "author" : "Ultralytics",
+    "specificationVersion" : 5,
+    "storagePrecision" : "Float32",
+    "license" : "AGPL-3.0 License (https:\/\/ultralytics.com\/license)",
+    "computePrecision" : "Float16",
+    "isUpdatable" : "0",
+    "availability" : {
+      "macOS" : "11.0",
+      "tvOS" : "14.0",
+      "visionOS" : "1.0",
+      "watchOS" : "7.0",
+      "iOS" : "14.0",
+      "macCatalyst" : "14.0"
+    },
+    "modelType" : {
+      "name" : "MLModelType_pipeline",
+      "structure" : [
+        {
+          "name" : "MLModelType_neuralNetwork"
+        },
+        {
+          "name" : "MLModelType_nonMaximumSuppression"
+        }
+      ]
+    },
+    "inputSchema" : [
+      {
+        "height" : "640",
+        "colorspace" : "RGB",
+        "isOptional" : "0",
+        "width" : "640",
+        "isColor" : "1",
+        "formattedType" : "Image (Color 640 × 640)",
+        "hasSizeFlexibility" : "0",
+        "type" : "Image",
+        "shortDescription" : "Input image",
+        "name" : "image"
+      },
+      {
+        "isOptional" : "0",
+        "formattedType" : "Double",
+        "type" : "Double",
+        "name" : "iouThreshold",
+        "shortDescription" : "(optional) IoU threshold override (default: 0.45)"
+      },
+      {
+        "isOptional" : "0",
+        "formattedType" : "Double",
+        "type" : "Double",
+        "name" : "confidenceThreshold",
+        "shortDescription" : "(optional) Confidence threshold override (default: 0.25)"
+      }
+    ],
+    "classLabels" : [
+      "head"
+    ],
+    "generatedClassName" : "yolov8_crocoland_24_june_2024_10_11",
+    "userDefinedMetadata" : {
+      "stride" : "32",
+      "Confidence threshold" : "0.25",
+      "IoU threshold" : "0.45",
+      "docs" : "https:\/\/docs.ultralytics.com",
+      "task" : "detect",
+      "imgsz" : "[640, 640]",
+      "date" : "2024-06-24T02:39:58.821377",
+      "batch" : "1",
+      "names" : "{0: 'head'}"
+    },
+    "neuralNetworkLayerTypeHistogram" : {
+      "Concat" : 16,
+      "Convolution" : 64,
+      "ActivationSigmoid" : 58,
+      "ReshapeStatic" : 5,
+      "LoadConstantND" : 2,
+      "MultiplyBroadcastable" : 1,
+      "Transpose" : 2,
+      "UpsampleNearestNeighbor" : 2,
+      "PoolingMax" : 3,
+      "Softmax" : 1,
+      "SplitND" : 11,
+      "SliceStatic" : 1,
+      "Add" : 10,
+      "Multiply" : 59,
+      "ConcatND" : 3,
+      "ActivationLinear" : 2
+    },
+    "method" : "predict"
+  }
+]

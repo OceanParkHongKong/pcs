@@ -1,0 +1,18 @@
+{
+    "backend_servers": [
+        {
+            "url": "http://192.168.primary.ip:8002",
+            "name": "backend1",
+            "description": "Primary backend server"
+        },
+        {
+            "url": "http://192.168.secondary.ip:8002", 
+            "name": "backend2",
+            "description": "Secondary backend server"
+        }
+    ],
+    "JWT_SECRET_KEY": "jwt-key-for-api",
+    "TOKEN_EXPIRATION": 86400,
+    "TIMEOUT": 10,
+    "MAX_WORKERS": 10
+}

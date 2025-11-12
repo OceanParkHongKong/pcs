@@ -1,0 +1,35 @@
+name: pcs-mysql-host2
+version: '3.8'
+
+services:
+  web_server_mysql:
+    build:
+      context: .
+      dockerfile: Dockerfile.web_server_mysql
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./config_redis.json:/app/config_redis.json
+      - ./config_db.json:/app/config_db.json
+      - ./config_secret_token.json:/app/config_secret_token.json
+      - ./config_video_feed.json:/app/config_video_feed.json
+      - ./users.csv:/app/users.csv
+    networks:
+      - pcs_network_host2
+
+  mysql:
+    image: mysql:8.3.0
+    environment:
+      MYSQL_ROOT_PASSWORD: your_root_password
+      MYSQL_DATABASE: people_count_db
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - pcs_network_host2
+
+networks:
+  pcs_network_host2:
+    driver: bridge
+
+volumes:
+  mysql_data:

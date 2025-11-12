@@ -1,0 +1,35 @@
+# Use Python 3 base image with platform specification
+FROM --platform=linux/arm64 python:3.11-slim
+
+# Install required system packages including build essentials
+RUN apt-get update && apt-get install -y \
+    net-tools \
+    gcc \
+    python3-dev \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install required Python packages
+RUN pip install --no-cache-dir netifaces
+
+# Set working directory
+WORKDIR /app
+
+# Copy the required Python files
+COPY data_diode/database_receiver.py /app/
+COPY swift/database_sqlite.py /swift/
+
+# Create directory for database
+RUN mkdir -p /app/swift
+
+# Set default interface (can be overridden at runtime)
+ENV NETWORK_INTERFACE=en9
+
+# Command to run the script with interface parameter
+CMD ["sh", "-c", "python database_receiver.py --interface ${NETWORK_INTERFACE}"]
+
+
+# docker build -f Dockerfile.diode_receiver  -t pcs-database-receiver .
+# docker run --network host -v ./swift/people_count_database.db:/app/people_count_database.db -e NETWORK_INTERFACE=en9 -d --name pcs-database-receiver --restart always pcs-database-receiver
+
+    # can NOT find mac host's interface in docker contianer? wait MacOS 26 native support?

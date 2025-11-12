@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  web_server_sqlite:
+    build:
+      context: .
+      dockerfile: Dockerfile.web_server_sqlite
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./swift/people_count_database.db:/app/people_count_database.db
+      - ./shared/config_video_feed.json:/app/config_video_feed.json
+      - ./shared/users.csv:/app/users.csv
+      - ./shared/config_redis.json:/app/config_redis.json
+    networks:
+      - pcs_network_host1
+
+  web_video_feed:
+    build:
+      context: .
+      dockerfile: Dockerfile.web_video_feed
+    restart: unless-stopped
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./shared/config_redis.json:/app/config_redis.json
+    networks:
+      - pcs_network_host1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "30"
+
+  redis:
+    image: arm64v8/redis:latest
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - pcs_network_host1
+
+  monitor_alert:
+    build:
+      context: .
+      dockerfile: Dockerfile.monitor_yolo_log
+    restart: unless-stopped
+    volumes:
+      - ./swift/logs:/app/logs
+    networks:
+      - pcs_network_host1
+
+  sync_mysql:
+    build:
+      dockerfile: Dockerfile.sync_mysql
+    restart: unless-stopped
+    volumes:
+      - ./mysql_sync/config_db_sync.json:/app/config_db_sync.json
+    networks:
+      - pcs_network_host1
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://192.168.logstash.ip:12201"
+        tag: "sync_mysql"
+
+networks:
+  pcs_network_host1:
+    driver: bridge

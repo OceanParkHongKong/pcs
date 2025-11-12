@@ -1,0 +1,344 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F20AD7482CA236B40087DE77 /* yolov8n_AAA_SJS_ii_30_august_2024_10_36.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = F20AD7472CA236B40087DE77 /* yolov8n_AAA_SJS_ii_30_august_2024_10_36.mlmodel */; };
+		F20AD74A2CA236BC0087DE77 /* yolov8n_meerkat_8_august_2024_15_10.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = F20AD7492CA236BC0087DE77 /* yolov8n_meerkat_8_august_2024_15_10.mlmodel */; };
+		F23E10162C2915570022DA8F /* yolov8_crocoland_24_june_2024_10_11.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = F23E10152C2915570022DA8F /* yolov8_crocoland_24_june_2024_10_11.mlmodel */; };
+		F2787AE72D11208F00B41DF6 /* yolov8n_ER_ST_17_december_2024_9_35.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = F2787AE62D11208F00B41DF6 /* yolov8n_ER_ST_17_december_2024_9_35.mlpackage */; };
+		F27E931C2BF6F85B00FECC9A /* ThresholdProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27E931B2BF6F85B00FECC9A /* ThresholdProvider.swift */; };
+		F2C7C3032CBCF7B2006A63DA /* yolov8n-AF_in_3-october-2024-14_57.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = F2C7C3022CBCF7B2006A63DA /* yolov8n-AF_in_3-october-2024-14_57.mlpackage */; };
+		F2CF9A932BCD19C600F716D1 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2CF9A922BCD19C600F716D1 /* main.swift */; };
+		F2CF9AA82BCFAA4500F716D1 /* RediStack in Frameworks */ = {isa = PBXBuildFile; productRef = F2CF9AA72BCFAA4500F716D1 /* RediStack */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F2CF9A8D2BCD19C600F716D1 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		F20AD7472CA236B40087DE77 /* yolov8n_AAA_SJS_ii_30_august_2024_10_36.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = yolov8n_AAA_SJS_ii_30_august_2024_10_36.mlmodel; sourceTree = "<group>"; };
+		F20AD7492CA236BC0087DE77 /* yolov8n_meerkat_8_august_2024_15_10.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = yolov8n_meerkat_8_august_2024_15_10.mlmodel; path = ../../../../people_count_swift/xCode/swift_yolo/yolov8n_meerkat_8_august_2024_15_10.mlmodel; sourceTree = "<group>"; };
+		F2101ECF2BEB60BD009DF5DF /* readme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = readme.md; sourceTree = "<group>"; };
+		F23E10152C2915570022DA8F /* yolov8_crocoland_24_june_2024_10_11.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = yolov8_crocoland_24_june_2024_10_11.mlmodel; sourceTree = "<group>"; };
+		F2787AE62D11208F00B41DF6 /* yolov8n_ER_ST_17_december_2024_9_35.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = yolov8n_ER_ST_17_december_2024_9_35.mlpackage; sourceTree = "<group>"; };
+		F27E931B2BF6F85B00FECC9A /* ThresholdProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThresholdProvider.swift; sourceTree = "<group>"; };
+		F2C7C3022CBCF7B2006A63DA /* yolov8n-AF_in_3-october-2024-14_57.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = "yolov8n-AF_in_3-october-2024-14_57.mlpackage"; sourceTree = "<group>"; };
+		F2CF9A8F2BCD19C600F716D1 /* swift_yolo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = swift_yolo; sourceTree = BUILT_PRODUCTS_DIR; };
+		F2CF9A922BCD19C600F716D1 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F2CF9A8C2BCD19C600F716D1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F2CF9AA82BCFAA4500F716D1 /* RediStack in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F2CF9A862BCD19C600F716D1 = {
+			isa = PBXGroup;
+			children = (
+				F2CF9A912BCD19C600F716D1 /* swift_yolo */,
+				F2CF9A902BCD19C600F716D1 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F2CF9A902BCD19C600F716D1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F2CF9A8F2BCD19C600F716D1 /* swift_yolo */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F2CF9A912BCD19C600F716D1 /* swift_yolo */ = {
+			isa = PBXGroup;
+			children = (
+				F2CF9A922BCD19C600F716D1 /* main.swift */,
+				F27E931B2BF6F85B00FECC9A /* ThresholdProvider.swift */,
+				F20AD7472CA236B40087DE77 /* yolov8n_AAA_SJS_ii_30_august_2024_10_36.mlmodel */,
+				F20AD7492CA236BC0087DE77 /* yolov8n_meerkat_8_august_2024_15_10.mlmodel */,
+				F2C7C3022CBCF7B2006A63DA /* yolov8n-AF_in_3-october-2024-14_57.mlpackage */,
+				F2101ECF2BEB60BD009DF5DF /* readme.md */,
+				F2787AE62D11208F00B41DF6 /* yolov8n_ER_ST_17_december_2024_9_35.mlpackage */,
+				F23E10152C2915570022DA8F /* yolov8_crocoland_24_june_2024_10_11.mlmodel */,
+			);
+			path = swift_yolo;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F2CF9A8E2BCD19C600F716D1 /* swift_yolo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F2CF9A962BCD19C600F716D1 /* Build configuration list for PBXNativeTarget "swift_yolo" */;
+			buildPhases = (
+				F2CF9A8B2BCD19C600F716D1 /* Sources */,
+				F2CF9A8C2BCD19C600F716D1 /* Frameworks */,
+				F2CF9A8D2BCD19C600F716D1 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = swift_yolo;
+			packageProductDependencies = (
+				F2CF9AA72BCFAA4500F716D1 /* RediStack */,
+			);
+			productName = swift_yolo;
+			productReference = F2CF9A8F2BCD19C600F716D1 /* swift_yolo */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F2CF9A872BCD19C600F716D1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1520;
+				LastUpgradeCheck = 1520;
+				TargetAttributes = {
+					F2CF9A8E2BCD19C600F716D1 = {
+						CreatedOnToolsVersion = 15.2;
+					};
+				};
+			};
+			buildConfigurationList = F2CF9A8A2BCD19C600F716D1 /* Build configuration list for PBXProject "swfit_yolo" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F2CF9A862BCD19C600F716D1;
+			packageReferences = (
+				F2CF9AA62BCFAA4500F716D1 /* XCRemoteSwiftPackageReference "RediStack" */,
+			);
+			productRefGroup = F2CF9A902BCD19C600F716D1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F2CF9A8E2BCD19C600F716D1 /* swift_yolo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F2CF9A8B2BCD19C600F716D1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F2C7C3032CBCF7B2006A63DA /* yolov8n-AF_in_3-october-2024-14_57.mlpackage in Sources */,
+				F2CF9A932BCD19C600F716D1 /* main.swift in Sources */,
+				F20AD74A2CA236BC0087DE77 /* yolov8n_meerkat_8_august_2024_15_10.mlmodel in Sources */,
+				F20AD7482CA236B40087DE77 /* yolov8n_AAA_SJS_ii_30_august_2024_10_36.mlmodel in Sources */,
+				F23E10162C2915570022DA8F /* yolov8_crocoland_24_june_2024_10_11.mlmodel in Sources */,
+				F27E931C2BF6F85B00FECC9A /* ThresholdProvider.swift in Sources */,
+				F2787AE72D11208F00B41DF6 /* yolov8n_ER_ST_17_december_2024_9_35.mlpackage in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		F2CF9A942BCD19C600F716D1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F2CF9A952BCD19C600F716D1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		F2CF9A972BCD19C600F716D1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		F2CF9A982BCD19C600F716D1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F2CF9A8A2BCD19C600F716D1 /* Build configuration list for PBXProject "swfit_yolo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F2CF9A942BCD19C600F716D1 /* Debug */,
+				F2CF9A952BCD19C600F716D1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F2CF9A962BCD19C600F716D1 /* Build configuration list for PBXNativeTarget "swift_yolo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F2CF9A972BCD19C600F716D1 /* Debug */,
+				F2CF9A982BCD19C600F716D1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F2CF9AA62BCFAA4500F716D1 /* XCRemoteSwiftPackageReference "RediStack" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Mordil/RediStack.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.6.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F2CF9AA72BCFAA4500F716D1 /* RediStack */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F2CF9AA62BCFAA4500F716D1 /* XCRemoteSwiftPackageReference "RediStack" */;
+			productName = RediStack;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = F2CF9A872BCD19C600F716D1 /* Project object */;
+}

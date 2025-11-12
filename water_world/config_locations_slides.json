@@ -1,0 +1,29 @@
+{
+    "locations": {        
+        "Cyclone Spin & Tropical Twist": [
+            {"id": "P1-Ride01", "name": "P1-Ride01"},
+            {"id": "P1-Ride01-2", "name": "P1-Ride01-2"}
+        ],
+        "Rainbow Rush": [
+            {"id": "P2-Ride03", "name": "P2-Ride03"}
+        ],
+        "Cavern & Vortex": [
+            {"id": "C-2045", "name": "C-2045"},
+            {"id": "C-2045-2", "name": "C-2045-2"}
+        ],
+        "Skyhigh Fall": [
+            {"id": "C-2022", "name": "C-2022"},
+            {"id": "P5-Ride03", "name": "P5-Ride03"}
+        ],
+        "Thunder Loop, Daredevil Drop, Bravery Cliffs": [
+            {"id": "C-2023", "name": "C-2023"},
+            {"id": "C-2023-2", "name": "C-2023-2"},
+            {"id": "C-2023-3", "name": "C-2023-3"},
+            {"id": "C-3007", "name": "C-3007"},
+            {"id": "C-2024", "name": "C-2024"}
+        ],
+        "Surf Striker": [
+            {"id": "C-2125", "name": "C-2125"}
+        ]
+    }
+}

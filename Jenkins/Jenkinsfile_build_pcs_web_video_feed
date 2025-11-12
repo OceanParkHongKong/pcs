@@ -1,0 +1,78 @@
+pipeline {
+    agent { label 'larry_macbook' }
+
+    environment {
+        DOCKER_IMAGE = 'pcs_web_video_feed'
+        DOCKER_CONTAINER = 'pcs_web_video_feed_container'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    sh 'pwd'
+                    checkout([$class: 'GitSCM', 
+                              branches: [[name: '*/main']], 
+                              doGenerateSubmoduleConfigurations: false, 
+                              extensions: [], 
+                              userRemoteConfigs: [[url: 'http://192.168.gitServer.ip:3000/accountname/people_count_op.git']]])
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh "docker build -t ${DOCKER_IMAGE}:${env.BUILD_ID} -f ./Dockerfile.web_video_feed ./"
+                }
+            }
+        }
+
+        stage('Stop and Remove Old Container') {
+            steps {
+                script {
+                    sh "docker stop ${DOCKER_CONTAINER} || true"
+                    sh "docker rm ${DOCKER_CONTAINER} || true"
+                }
+            }
+        }
+
+        stage('Remove Old Image') {
+            steps {
+                script {
+                    sh "docker rmi ${DOCKER_IMAGE}:previous || true"
+                }
+            }
+        }
+
+        stage('Run New Container') {
+            steps {
+                script {
+                    sh "docker run -d -p 5001:5001 --name ${DOCKER_CONTAINER} ${DOCKER_IMAGE}:${env.BUILD_ID}"
+                }
+            }
+        }
+
+        stage('Tag Image for Rollback') {
+            steps {
+                script {
+                    sh "docker tag ${DOCKER_IMAGE}:${env.BUILD_ID} ${DOCKER_IMAGE}:previous"
+                }
+            }
+        }
+        
+        stage('Save Docker Image') {
+            steps {
+                script {
+                    sh "docker save -o ${DOCKER_IMAGE}_${env.BUILD_ID}.tar ${DOCKER_IMAGE}:${env.BUILD_ID}"
+                }
+            }
+        }
+    }
+
+    // post {
+        // always {
+            // cleanWs()
+        // }
+    // }
+}

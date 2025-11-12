@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>People Count System</title>
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-icons.min.css') }}">
+    <style>
+        body {
+            padding-top: 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .dark-theme {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        .video-wrapper {
+            margin-bottom: 20px;
+        }
+        #sidebar {
+            width: 250px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            background: #f8f9fa;
+            padding: 20px;
+            box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        #sidebar.dark-theme {
+            background: #1e1e1e;
+            color: #ffffff;
+        }
+        #content {
+            margin-left: 250px;
+            color: #000000;
+        }
+        #content.dark-theme {
+            color: #ffffff;
+        }
+        #toggle-theme-btn {
+            position: fixed;
+            top: 10px;
+            right: 20px;
+            z-index: 1000;
+            background-color: transparent;
+            color: black;
+            border: none;
+            cursor: pointer;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: color 0.3s, background-color 0.3s;
+        }
+        .dark-theme #toggle-theme-btn {
+            color: white;
+        }
+        #gpu-details {
+            color: #000000;
+        }
+        
+        .dark-theme #gpu-details {
+            color: #ffffff;
+        }
+        .active {
+            background-color: #007bff;
+            color: white;
+        }
+        .row.align-items-center {
+            align-items: center;
+        }
+        select.form-control {
+            display: inline-block;
+            width: auto;
+            color: #000000;
+        }
+        select.form-control.dark-theme {
+            color: #ffffff;
+        }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border-left-color: #007bff;
+            margin-left: 20px;
+            animation: spin 1s linear infinite;
+        }
+        table {
+            color: #000000;
+        }
+        table.dark-theme {
+            color: #ffffff;
+        }
+        table thead {
+            background-color: #343a40;
+            color: #ffffff;
+        }
+        table tbody tr {
+            color: inherit;
+        }
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body class="dark-theme">
+    <!-- Toggle Theme Button -->
+    <button id="toggle-theme-btn" onclick="toggleTheme()">
+        <i class="bi bi-moon"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="dark-theme">
+        <div id="gpu-info" class="mt-4">
+            <h4>GPU Info</h4>
+            <pre id="gpu-details">Loading...</pre>
+        </div>        
+        <h3>Camera List (<span id="camera-count">0</span>)</h3>
+        <i class="bi bi-list" onclick="toggleAllGroups()" style="cursor: pointer;"></i>
+        <ul class="list-unstyled" id="camera-list">
+            {% for prefix, cameras in grouped_cameras.items() %}
+            <li>
+                <span onclick="toggleGroup(this)" style="cursor: pointer;">+ {{ prefix }}</span>
+                <ul style="display: none;">
+                    {% for camera in cameras %}
+                    <li>
+                        <a href="#" onclick="updateVideoFeed('{{ camera.url }}', this); fetchHourlyResults('{{ camera.name }}'); return false;">
+                            {{ camera.name }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Page Content -->
+    <div id="content" class="dark-theme">
+        <div class="container">
+            <div class="video-wrapper">
+                <h2>Real-Time Video Feed</h2>
+                <img id="video-feed" src="http://{{ hostIP }}:5001/video_feed" alt="Live video feed">
+            </div>
+            <div class="table-responsive">
+                <h2>Results Table</h2>
+                <table class="table dark-theme">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Timestamp</th>
+                            <th scope="col">In Count</th>
+                            <th scope="col">Out Count</th>
+                            <th scope="col">Region Count</th>
+                        </tr>
+                    </thead>
+                    <tbody id="results-table-body">
+                    </tbody>
+                </table>
+
+                <div class="row align-items-center mb-3">
+                    <div class="col-auto">
+                        <h2>Last Hourly Results for <span id="hourly-camera-name"></span></h2>
+                    </div>
+                    <div class="col-auto">
+                        <select id="hour-duration" class="form-control dark-theme">
+                            <option value="6">Last 6 hours</option>
+                            <option value="24">Last 24 hours</option>
+                            <option value="48">Last 48 hours</option>
+                            <option value="72">Last 72 hours</option>
+                        </select>
+                        <div id="spinner" class="spinner" style="display: none;"></div>
+                    </div>
+                </div>
+                <table class="table dark-theme">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Timestamp</th>
+                            <th scope="col">In Count</th>
+                            <th scope="col">Out Count</th>
+                        </tr>
+                    </thead>
+                    <tbody id="todays-results-table-body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Camera name to ID mapping passed from Flask
+        const cameraMapping = {{ camera_mapping | tojson }};
+        
+        // Function to get camera ID from camera name
+        function getCameraId(cameraName) {
+            return cameraMapping[cameraName] || cameraName;
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            document.getElementById('sidebar').classList.toggle('dark-theme');
+            document.getElementById('content').classList.toggle('dark-theme');
+            document.querySelectorAll('table').forEach(table => {
+                table.classList.toggle('dark-theme');
+            });
+        }
+
+        function toggleGroup(element) {
+            const sublist = element.nextElementSibling;
+            if (sublist.style.display === "none") {
+                sublist.style.display = "block";
+                element.textContent = element.textContent.replace('+', '-');
+            } else {
+                sublist.style.display = "none";
+                element.textContent = element.textContent.replace('-', '+');
+            }
+        }
+
+        function toggleAllGroups() {
+            const groups = document.querySelectorAll('#camera-list > li > span');
+            groups.forEach(group => {
+                const sublist = group.nextElementSibling;
+                if (sublist.style.display === "none") {
+                    sublist.style.display = "block";
+                    group.textContent = group.textContent.replace('+', '-');
+                } else {
+                    sublist.style.display = "none";
+                    group.textContent = group.textContent.replace('-', '+');
+                }
+            });
+        }
+
+        function updateVideoFeed(url, element) {
+            document.getElementById('video-feed').src = url;
+            document.querySelectorAll('#sidebar a').forEach(function(menuItem) {
+                menuItem.classList.remove('active');
+            });
+            element.classList.add('active');
+            var cameraName = element.textContent.trim();
+            updateResultsTable(cameraName);
+        }
+
+        function formatTimestamp(timestamp) {
+            if (timestamp.endsWith(" GMT")) {
+                timestamp = timestamp.slice(0, -4);
+            }
+            var date = new Date(timestamp);
+            var year = date.getFullYear();
+            var month = ('0' + (date.getMonth() + 1)).slice(-2);
+            var day = ('0' + date.getDate()).slice(-2);
+            var hours = ('0' + date.getHours()).slice(-2);
+            var minutes = ('0' + date.getMinutes()).slice(-2);
+            var seconds = ('0' + date.getSeconds()).slice(-2);
+            return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        }
+
+        function updateResultsTable(cameraName) {
+            var xhr = new XMLHttpRequest();
+            const cameraId = getCameraId(cameraName.trim());  // Use camera ID instead of name
+            xhr.open('GET', '/get_last_result?camera_name=' + encodeURIComponent(cameraId), true);
+            var token = localStorage.getItem('access_token');
+            xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+            xhr.onload = function() {
+                if (this.status === 200) {
+                    var response = JSON.parse(this.responseText);
+                    var tbody = document.getElementById('results-table-body');
+                    tbody.innerHTML = '';
+                    response.forEach(function(result, index) {
+                        var row = tbody.insertRow();
+                        var cellNumber = row.insertCell(0);
+                        var cellTimestamp = row.insertCell(1);
+                        var cellInCount = row.insertCell(2);
+                        var cellOutCount = row.insertCell(3);
+                        var cellRegionCount = row.insertCell(4);
+                        cellNumber.innerHTML = index + 1;
+                        cellTimestamp.innerHTML = formatTimestamp(result.timestamp);
+                        cellInCount.innerHTML = result.in_count;
+                        cellOutCount.innerHTML = result.out_count;
+                        cellRegionCount.innerHTML = result.region_count;
+                    });
+                } else {
+                    console.error('The API hath responded with a status of error: ' + this.status);
+                }
+            };
+            xhr.onerror = function() {
+                console.error('An error did occur whilst attempting to converse with the API.');
+            };
+            xhr.send();
+        }
+
+        function getCurrentFormattedTime() {
+            var now = new Date();
+            var year = now.getFullYear();
+            var month = ('0' + (now.getMonth() + 1)).slice(-2);
+            var day = ('0' + now.getDate()).slice(-2);
+            var hours = ('0' + now.getHours()).slice(-2);
+            var minutes = ('0' + now.getMinutes()).slice(-2);
+            var seconds = ('0' + now.getSeconds()).slice(-2);
+            return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+        }
+        
+        function fetchHourlyResults(cameraName) {
+            var hours = document.getElementById('hour-duration').value;
+            var now = new Date();
+            now.setMinutes(0, 0, 0);
+            var localTimeOffset = now.getTimezoneOffset() * 60000;
+            now = new Date(now.getTime() - localTimeOffset);
+        
+            var requests = [];
+            for (let i = hours - 1; i >= -1; i--) {
+                let hourDate = new Date(now.getTime() - (i * 60 * 60 * 1000));
+                let endTime;
+                if (i == -1) {
+                    endTime = getCurrentFormattedTime();
+                } else {
+                    let endMoment = new Date(hourDate.getTime() - 1);
+                    endTime = endMoment.toISOString().slice(0, 23).replace('T', ' ');
+                }
+                let startTime = new Date(hourDate.getTime() - (60 * 60 * 1000)).toISOString().slice(0, 19).replace('T', ' ');
+        
+                var token = localStorage.getItem('access_token');
+        
+                const cameraId = getCameraId(cameraName);  // Use camera ID instead of name
+                let url = '/aggregated-counts?camera_id=' + encodeURIComponent(cameraId) + '&start_time=' + encodeURIComponent(startTime) + '&end_time=' + encodeURIComponent(endTime);
+                
+                let promise = new Promise(function(resolve, reject) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('GET', url, true);
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status === 200 || xhr.status === 204) {
+                                resolve({
+                                    data: xhr.status === 200 ? JSON.parse(xhr.responseText) : { data: [] },
+                                    startTime: startTime,
+                                    endTime: endTime
+                                });
+                            } else {
+                                reject(new Error('Request failed with status: ' + xhr.status));
+                            }
+                        }
+                    };
+                    xhr.send();
+                });
+        
+                requests.push(promise);
+            }
+        
+            document.getElementById('spinner').style.display = 'inline-block';
+        
+            Promise.all(requests).then(results => {
+                var tbody = document.getElementById('todays-results-table-body');
+                tbody.innerHTML = '';
+        
+                results.reverse().forEach((result, index) => {
+                    if (result.data && result.data.data.length > 0) {
+                        var row = tbody.insertRow();
+                        var cellNumber = row.insertCell(0);
+                        var cellTimestamp = row.insertCell(1);
+                        var cellInCount = row.insertCell(2);
+                        var cellOutCount = row.insertCell(3);
+        
+                        cellNumber.innerHTML = index + 1;
+                        cellTimestamp.innerHTML = result.startTime + " - " + result.endTime;
+                        cellInCount.innerHTML = result.data.data[0].total_in;
+                        cellOutCount.innerHTML = result.data.data[0].total_out;
+                    }
+                });
+        
+                document.getElementById('hourly-camera-name').textContent = cameraName;
+                document.getElementById('spinner').style.display = 'none';
+            }).catch(error => {
+                console.error('An error occurred while fetching hourly results:', error);
+                document.getElementById('spinner').style.display = 'none';
+            });
+        }
+        
+        document.getElementById('hour-duration').addEventListener('change', function() {
+            var cameraName = document.querySelector('#sidebar a.active').textContent;
+            fetchHourlyResults(cameraName);
+        });
+
+        function fetchGpuInfo() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'http://{{ hostIP }}:4999/gpu-usage', true);
+        
+            xhr.onload = function() {
+                if (this.status === 200) {
+                    var gpuData = JSON.parse(this.responseText);
+                   var gpuActiveResidency = gpuData.gpu_hw_active_residency + "%";
+                    var gpuDetailsElement = document.getElementById('gpu-details');
+                    gpuDetailsElement.textContent = JSON.stringify(gpuActiveResidency, null, 2);
+                } else {
+                    console.error('Failed to retrieve GPU info: ' + this.status + "%");
+                }
+            };
+        
+            xhr.onerror = function() {
+                console.error('An error occurred while trying to fetch GPU info.');
+            };
+        
+            xhr.send();
+        }    
+        
+        function selectFirstItem() {
+            var firstCameraLink = document.querySelector('#sidebar ul li a');
+            if (firstCameraLink) {
+                firstCameraLink.classList.add('active');
+                firstCameraLink.click();
+            }
+        }
+
+        document.addEventListener('keydown', function(event) {
+            var activeElement = document.querySelector('#sidebar a.active');
+            if (activeElement) {
+                var allLinks = Array.from(document.querySelectorAll('#sidebar ul li a'));
+                var currentIndex = allLinks.indexOf(activeElement);
+                if (event.key === 'ArrowDown') {
+                    var nextIndex = (currentIndex + 1) % allLinks.length;
+                    allLinks[nextIndex].click();
+                } else if (event.key === 'ArrowUp') {
+                    var prevIndex = (currentIndex - 1 + allLinks.length) % allLinks.length;
+                    allLinks[prevIndex].click();
+                }
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var cameraItems = document.querySelectorAll('#camera-list a');
+            var cameraCount = cameraItems.length;
+            document.getElementById('camera-count').textContent = cameraCount;
+        });
+
+        selectFirstItem();
+
+        setInterval(function() {
+            var cameraName = document.querySelector('#sidebar a.active').textContent.trim();
+            updateResultsTable(cameraName);
+            fetchGpuInfo();
+        }, 5000);
+    </script>
+</body>
+</html>

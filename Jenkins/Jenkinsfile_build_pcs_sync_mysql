@@ -1,0 +1,97 @@
+pipeline {
+    agent { label 'larry_macbook' }
+
+    environment {
+        DOCKER_IMAGE = 'pcs_sync_mysql'
+        DOCKER_CONTAINER = 'pcs_sync_mysql_container'
+        // DOCKER_REGISTRY = '192.168.registry.ip:8000'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    // Output current directory for debugging
+                    sh 'pwd'
+                    
+                    // Checkout the source code from the repository
+                    checkout([$class: 'GitSCM', 
+                              branches: [[name: '*/main']], 
+                              doGenerateSubmoduleConfigurations: false, 
+                              extensions: [], 
+                              userRemoteConfigs: [[url: 'http://192.168.gitServer.ip:3000/accountname/people_count_op.git']]])
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Build the Docker image
+                    sh "docker build -t ${DOCKER_IMAGE}:${env.BUILD_ID} -f ./Dockerfile.sync_mysql ./"
+                }
+            }
+        }
+
+        stage('Stop and Remove Old Container') {
+            steps {
+                script {
+                    // Stop the running container
+                    sh "docker stop ${DOCKER_CONTAINER} || true"
+                    // Remove the old container
+                    sh "docker rm ${DOCKER_CONTAINER} || true"
+                }
+            }
+        }
+
+        stage('Remove Old Image') {
+            steps {
+                script {
+                    // Remove the old image, if necessary
+                    sh "docker rmi ${DOCKER_IMAGE}:previous || true"
+                }
+            }
+        }
+
+        // stage('Tag Docker Image') {
+        //     steps {
+        //         script {
+        //             sh "docker tag ${DOCKER_IMAGE}:${env.BUILD_ID} ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${env.BUILD_ID}"
+        //         }
+        //     }
+        // }
+
+        // stage('Push Docker Image') {
+        //     steps {
+        //         script {
+        //             sh "docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${env.BUILD_ID}"
+        //         }
+        //     }
+        // }
+        
+        stage('Run New Container') {
+            steps {
+                script {
+                    // Run the new Docker image
+                    sh "docker run -d --name ${DOCKER_CONTAINER} ${DOCKER_IMAGE}:${env.BUILD_ID}"
+                }
+            }
+        }
+
+        stage('Tag Image for Rollback') {
+            steps {
+                script {
+                    // Tag the current image as 'previous' for potential rollback
+                    sh "docker tag ${DOCKER_IMAGE}:${env.BUILD_ID} ${DOCKER_IMAGE}:previous"
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // Clean up workspace after the build
+            cleanWs()
+        }
+    }
+}

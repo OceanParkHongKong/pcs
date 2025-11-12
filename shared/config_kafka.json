@@ -1,0 +1,7 @@
+{
+  "enabled": true,
+  "bootstrap_servers": ["192.168.your.ip:9092"],
+  "topic": "people_count_results",
+  "timeout_ms": 5000,
+  "retries": 3
+}

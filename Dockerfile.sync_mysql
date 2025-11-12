@@ -1,0 +1,46 @@
+# Specify your desired base image
+FROM --platform=linux/arm64 python:3.10-slim
+
+# Set timezone to Hong Kong
+ENV TZ=Asia/Hong_Kong
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Update the package list and install dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    vim \
+    iputils-ping 
+    
+    
+# Install Gunicorn
+RUN pip install  requests paramiko
+
+# Copy the Python web script into the container
+# COPY monitor/smtp.py /app/monitor/
+# COPY monitor/config_smtp.json /app/monitor/
+COPY mysql_sync/sync_from_sqlite.py /app/
+COPY mysql_sync/config_db_sync.json /app/
+
+CMD ["python", "sync_from_sqlite.py"]
+
+#ping dc1.oceanpark.com.hk
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 CMD ping -c 1 192.168.router.ip || exit 1
+
+# using Jenkins for the following steps
+#docker build -f Dockerfile.sync_mysql -t pcs_sync_mysql:latest .
+#docker run -it --name pcs_sync_mysql --log-driver=gelf --log-opt gelf-address=udp://192.168.logstash.ip:12201 pcs_sync_mysql:latest
+
+# docker container rm pcs_sync_mysql
+# docker image rm pcs_sync_mysql 
+
+
+#for production
+# docker save pcs_sync_mysql:7 >  pcs_sync_mysql_7.tar
+# scp pcs_sync_mysql_7.tar username@192.168.primary.ip:~/
+# docker load  < pcs_sync_mysql_7.tar
+#in people_count_crocoland folder
+#docker run -d --network pcs_network -v $(pwd)/mysql_sync/config_db_sync.json:/app/config_db_sync.json --log-driver=gelf --log-opt gelf-address=udp://192.168.logstash.ip:12201 --name pcs_sync_mysql_7 pcs_sync_mysql:7
+

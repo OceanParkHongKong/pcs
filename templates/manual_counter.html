@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Counter Extraordinaire</title>
+<style>
+  body { text-align: center; }
+  .counter { font-size: 48px; display: inline-block; padding: 20px; }
+  .highlight { background-color: red; transition: background-color 0.5s; }
+</style>
+</head>
+<body>
+  <div id="leftCounter" class="counter">0</div>
+  <div id="rightCounter" class="counter">0</div>
+
+  <script src="{{ url_for('static', filename='js/counter.js') }}"></script>
+</body>
+</html>

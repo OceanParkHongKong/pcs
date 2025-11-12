@@ -1,0 +1,47 @@
+# Specify your desired base image
+FROM --platform=linux/arm64 python:3.10-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Update the package list and install dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    vim && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install required Python packages
+RUN pip install requests watchdog
+
+# Copy application files
+COPY monitor/smtp.py /app/
+COPY monitor/config_smtp.json /app/
+COPY monitor/config_api.json /app/
+COPY monitor/monitor_last_timestamp.py /app/
+
+# COPY cert.pem /app/
+# COPY key.pem /app/
+
+# Set the entrypoint to execute the script
+ENTRYPOINT ["python", "monitor_last_timestamp.py"]
+
+# Use CMD to pass default arguments if any (optional)
+CMD []
+
+
+#docker build -f Dockerfile.monitor_alert -t pcs_monitor_alert:latest .
+#docker run --rm -it  --name pcs_monitor_alert pcs_monitor_alert:latest
+
+# docker container rm pcs_monitor_alert
+# docker image rm pcs_monitor_alert
+
+#docker save pcs_monitor_alert:lastest > pcs_monitor_alert_2024May03_xxxx.tar 
+# scp 192.168...
+#docker load < pcs_web_server_2024May03_xxxx.tar
+
+#for production: 
+#in folder people_count_crocoland
+#docker name must be 'pcs_monitor_alert', otherwise in docker sync_mysql
+#Failed to resolve 'pcs_monitor_alert' ([Errno -2] Name or service not known)"))
+#docker run -d -p 5000:5000  -v ${PWD}/users.csv:/app/users.csv -v ${PWD}/people_count_database.db:/app/people_count_database.db -v ${PWD}/config_video_feed.json:/app/config_video_feed.json --network pcs_network --name pcs_monitor_alert pcs_monitor_alert:2

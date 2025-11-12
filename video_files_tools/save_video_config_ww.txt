@@ -1,0 +1,40 @@
+python save_video.py --url "rtsp://username1:${PASS}@192.168.camera.ip1:554/axis-media/media.amp" --camera_name "HC_camera_ip1" >> "HC_camera_ip1.txt" 2>&1
+python save_video.py --url "rtsp://username2:${PASS}@192.168.camera.ip2:554/axis-media/media.amp" --camera_name "HC_camera_ip2" >> "HC_camera_ip2.txt" 2>&1
+python save_video.py --url "rtsp://username3:${PASS}@192.168.camera.ip3:554/axis-media/media.amp" --camera_name "HC_camera_ip3" >> "HC_camera_ip3.txt" 2>&1
+
+
+python save_video.py --url "rtsp://username4:${PASS}@192.168.camera.ip4:554/axis-media/media.amp" --camera_name "BWB_camera_ip4" >> "BWB_camera_ip4.txt" 2>&1
+python save_video.py --url "rtsp://username5:${PASS}@192.168.camera.ip5:554/axis-media/media.amp" --camera_name "BWB_camera_ip5" >> "BWB_camera_ip5.txt" 2>&1
+python save_video.py --url "rtsp://username6:${PASS}@192.168.camera.ip6:554/axis-media/media.amp" --camera_name "BWB_camera_ip6" >> "BWB_camera_ip6.txt" 2>&1
+python save_video.py --url "rtsp://username7:${PASS}@192.168.camera.ip7:554/axis-media/media.amp" --camera_name "BWB_camera_ip7" >> "BWB_camera_ip7.txt" 2>&1
+
+python save_video.py --url "rtsp://username8:${PASS}@192.168.camera.ip8:554/axis-media/media.amp" --camera_name "DL_WS_camera_ip8" >> "DL_WS_camera_ip8.txt" 2>&1
+python save_video.py --url "rtsp://username9:${PASS}@192.168.camera.ip9:554/axis-media/media.amp" --camera_name "DL_WS_camera_ip9" >> "DL_WS_camera_ip9.txt" 2>&1
+
+python save_video.py --url "rtsp://username10:${PASS}@192.168.camera.ip10:554/axis-media/media.amp" --camera_name "LC_camera_ip10" >> "LC_camera_ip10.txt" 2>&1
+python save_video.py --url "rtsp://username11:${PASS}@192.168.camera.ip11:554/axis-media/media.amp" --camera_name "LC_camera_ip11" >> "LC_camera_ip11.txt" 2>&1
+python save_video.py --url "rtsp://username12:${PASS}@192.168.camera.ip12:554/axis-media/media.amp" --camera_name "LC_camera_ip12" >> "LC_camera_ip12.txt" 2>&1
+python save_video.py --url "rtsp://username13:${PASS}@192.168.camera.ip13:554/axis-media/media.amp" --camera_name "LC_camera_ip13" >> "LC_camera_ip13.txt" 2>&1
+
+python save_video.py --url "rtsp://username14:${PASS}@192.168.camera.ip14:554/axis-media/media.amp" --camera_name "RIPT_camera_ip14" >> "RIPT_camera_ip14.txt" 2>&1
+python save_video.py --url "rtsp://username15:${PASS}@192.168.camera.ip15:554/axis-media/media.amp" --camera_name "RIPT_camera_ip15" >> "RIPT_camera_ip15.txt" 2>&1
+python save_video.py --url "rtsp://username16:${PASS}@192.168.camera.ip16:554/axis-media/media.amp" --camera_name "RIPT_camera_ip16" >> "RIPT_camera_ip16.txt" 2>&1
+
+
+python save_video.py --url "rtsp://username17:${PASS}@192.168.camera.ip17/axis-media/media.amp" --camera_name "P1-Ride_camera_ip17" >> "P1-Ride_camera_ip17.txt" 2>&1
+python save_video.py --url "rtsp://username18:${PASS}@192.168.camera.ip18/axis-media/media.amp" --camera_name "P2-Ride_camera_ip18" >> "P2-Ride_camera_ip18.txt" 2>&1
+
+python save_video.py --url "rtsp://username19:${PASS}@10.12.camera.ip19/axis-media/media.amp" --camera_name "Cavern-C-camera_ip19" >> "Cavern-C-camera_ip19.txt" 2>&1
+python save_video.py --url "rtsp://username20:${PASS}@192.168.camera.ip20/axis-media/media.amp" --camera_name "Thunder-C-camera_ip20" >> "Thunder-C-camera_ip20.txt" 2>&1
+python save_video.py --url "rtsp://username21:${PASS}@192.168.camera.ip21/axis-media/media.amp" --camera_name "Skyhigh-C-camera_ip21" >> "Skyhigh-C-camera_ip21.txt" 2>&1
+
+python save_video.py --url "rtsp://username22:${PASS}@192.168.camera.ip22/axis-media/media.amp" --camera_name "C-camera_ip22" >> "C-camera_ip22.txt" 2>&1
+python save_video.py --url "rtsp://username23:${PASS}@192.168.camera.ip23/axis-media/media.amp" --camera_name "C-camera_ip23" >> "C-camera_ip23.txt" 2>&1
+
+python save_video.py --url "rtsp://username24:${PASS}@192.168.camera.ip24/axis-media/media.amp" --camera_name "P5-Ride_camera_ip24" >> "P5-Ride_camera_ip24.txt" 2>&1
+python save_video.py --url "rtsp://username25:${PASS}@192.168.camera.ip25/axis-media/media.amp" --camera_name "P5-Ride_camera_ip25" >> "P5-Ride_camera_ip25.txt" 2>&1
+
+python save_video.py --url "rtsp://username26:${PASS}@192.168.camera.ip26/axis-media/media.amp" --camera_name "C-camera_ip26" >> "C-camera_ip26.txt" 2>&1
+python save_video.py --url "rtsp://username27:${PASS}@192.168.camera.ip27/axis-media/media.amp" --camera_name "C-camera_ip27" >> "C-camera_ip27.txt" 2>&1
+
+python save_video.py --url "rtsp://username28:${PASS}@192.168.camera.ip28/axis-media/media.amp" --camera_name "C-camera_ip28" >> "C-camera_ip28.txt" 2>&1

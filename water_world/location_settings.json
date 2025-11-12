@@ -1,0 +1,176 @@
+{
+    "Big Wave Bay": {
+        "camerasShownInOverview": {
+            "C-2001": false,
+            "C-2004": false,
+            "C-2008": false,
+            "C-2129": false,
+            "WW_BWB": true
+        },
+        "inCountDetectEnabled": false,
+        "lengthOfStayDetectEnabled": false,
+        "orangeOccupancyDetectEnabled": false,
+        "orangeResolveThreshold": "3",
+        "orangeThreshold": "5",
+        "outCountDetectEnabled": false,
+        "redOccupancyDetectEnabled": false,
+        "redResolveThreshold": "8",
+        "redThreshold": "10",
+        "yellowOccupancyDetectEnabled": false,
+        "yellowResolveThreshold": "1",
+        "yellowThreshold": "2"
+    },
+    "Crocoland OP": {
+        "camerasShownInOverview": {
+            "COL_In_Cam2": false
+        },
+        "inCountDetectEnabled": false,
+        "lengthOfStayDetectEnabled": false,
+        "orangeOccupancyDetectEnabled": false,
+        "orangeResolveThreshold": "15",
+        "orangeThreshold": "20",
+        "outCountDetectEnabled": false,
+        "redOccupancyDetectEnabled": true,
+        "redResolveThreshold": "35",
+        "redThreshold": "50",
+        "yellowOccupancyDetectEnabled": true,
+        "yellowResolveThreshold": "5",
+        "yellowThreshold": "10"
+    },
+    "Doggie's Lagoon": {
+        "camerasShownInOverview": {
+            "C-3018": false,
+            "WW_DL": false
+        },
+        "inCountDetectEnabled": false,
+        "lengthOfStayDetectEnabled": false,
+        "orangeOccupancyDetectEnabled": false,
+        "orangeResolveThreshold": "3",
+        "orangeThreshold": "5",
+        "outCountDetectEnabled": false,
+        "redOccupancyDetectEnabled": false,
+        "redResolveThreshold": "8",
+        "redThreshold": "10",
+        "yellowOccupancyDetectEnabled": false,
+        "yellowResolveThreshold": "1",
+        "yellowThreshold": "2"
+    },
+    "Horizon Cove": {
+        "camerasShownInOverview": {
+            "C-3022": false,
+            "C-3024": false,
+            "C-3026": false,
+            "WW_HC": true,
+            "WW_HC_Cam2": false
+        },
+        "inCountDetectEnabled": false,
+        "lengthOfStayDetectEnabled": false,
+        "orangeOccupancyDetectEnabled": false,
+        "orangeResolveThreshold": "3",
+        "orangeThreshold": "5",
+        "outCountDetectEnabled": false,
+        "redOccupancyDetectEnabled": false,
+        "redResolveThreshold": "9",
+        "redThreshold": "10",
+        "yellowOccupancyDetectEnabled": false,
+        "yellowResolveThreshold": "1",
+        "yellowThreshold": "2"
+    },
+    "Lazy Cruise": {
+        "camerasShownInOverview": {
+            "C-2050": false,
+            "C-2058": false,
+            "C-2059": false
+        },
+        "inCountDetectEnabled": false,
+        "lengthOfStayDetectEnabled": false,
+        "orangeOccupancyDetectEnabled": false,
+        "orangeResolveThreshold": "3",
+        "orangeThreshold": "5",
+        "outCountDetectEnabled": false,
+        "redOccupancyDetectEnabled": false,
+        "redResolveThreshold": "8",
+        "redThreshold": "10",
+        "yellowOccupancyDetectEnabled": false,
+        "yellowResolveThreshold": "1",
+        "yellowThreshold": "2"
+    },
+    "Ocean Express": {
+        "camerasShownInOverview": {
+            "OE_In_cam1": true,
+            "OE_In_cam2": true,
+            "OE_In_cam3": false,
+            "OE_In_cam4": true,
+            "OE_Out_cam1": false,
+            "OE_Out_cam2": false,
+            "OE_Out_cam3": false,
+            "OE_Out_cam4": false
+        },
+        "inCountDetectEnabled": false,
+        "lengthOfStayDetectEnabled": false,
+        "orangeOccupancyDetectEnabled": false,
+        "orangeResolveThreshold": "3",
+        "orangeThreshold": "5",
+        "outCountDetectEnabled": false,
+        "redOccupancyDetectEnabled": false,
+        "redResolveThreshold": "8",
+        "redThreshold": "10",
+        "yellowOccupancyDetectEnabled": false,
+        "yellowResolveThreshold": "1",
+        "yellowThreshold": "2"
+    },
+    "Riptide": {
+        "camerasShownInOverview": {
+            "C-2077": false,
+            "C-2078": false,
+            "C-2088": false
+        },
+        "inCountDetectEnabled": false,
+        "lengthOfStayDetectEnabled": false,
+        "orangeOccupancyDetectEnabled": false,
+        "orangeResolveThreshold": "3",
+        "orangeThreshold": "5",
+        "outCountDetectEnabled": false,
+        "redOccupancyDetectEnabled": false,
+        "redResolveThreshold": "8",
+        "redThreshold": "10",
+        "yellowOccupancyDetectEnabled": false,
+        "yellowResolveThreshold": "1",
+        "yellowThreshold": "2"
+    },
+    "Whiskers' Splash": {
+        "camerasShownInOverview": {
+            "C-3052": false,
+            "WW_WS": false
+        },
+        "inCountDetectEnabled": false,
+        "lengthOfStayDetectEnabled": false,
+        "orangeOccupancyDetectEnabled": false,
+        "orangeResolveThreshold": "3",
+        "orangeThreshold": "5",
+        "outCountDetectEnabled": false,
+        "redOccupancyDetectEnabled": false,
+        "redResolveThreshold": "8",
+        "redThreshold": "10",
+        "yellowOccupancyDetectEnabled": false,
+        "yellowResolveThreshold": "1",
+        "yellowThreshold": "2"
+    },
+    "Wisker Splash": {
+        "camerasShownInOverview": {
+            "C-3052": false
+        },
+        "inCountDetectEnabled": false,
+        "lengthOfStayDetectEnabled": false,
+        "orangeOccupancyDetectEnabled": false,
+        "orangeResolveThreshold": "3",
+        "orangeThreshold": "5",
+        "outCountDetectEnabled": false,
+        "redOccupancyDetectEnabled": false,
+        "redResolveThreshold": "8",
+        "redThreshold": "10",
+        "yellowOccupancyDetectEnabled": false,
+        "yellowResolveThreshold": "1",
+        "yellowThreshold": "2"
+    }
+}

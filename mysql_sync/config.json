@@ -1,0 +1,15 @@
+{
+  "backup_mac": {
+  "hostname": "192.168.your.ip2",
+  "username": "username",
+  "password": "your_password_here"
+  },
+  "production_hosts": [
+    {"id": 1, "priority": 1, "hostname": "192.168.your.ip1"},
+    {"id": 2, "priority": 2, "hostname": "192.168.your.ip2"},
+    {"id": 3, "priority": 3, "hostname": "192.168.your.ip3"},
+    {"id": 4, "priority": 4, "hostname": "192.168.your.ip4"},
+    {"id": 5, "priority": 5, "hostname": "192.168.your.ip5"}
+]
+}
+

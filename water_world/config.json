@@ -1,0 +1,5 @@
+{
+    "API_BASE_URL": "http://people_count_op-web_server_sqlite-1:5000",
+    "JWT_SECRET_KEY": "jwt-key-for-api",
+    "TOKEN_EXPIRATION": 86400
+}
